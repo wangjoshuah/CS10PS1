@@ -27,7 +27,7 @@ public class RegionFinderTest extends DrawingFrame {
 	public static void main(String[] args) { 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new RegionFinderTest("pictures/smiley.png", new Color(0, 0, 0));
+//				new RegionFinderTest("pictures/smiley.png", new Color(0, 0, 0));
 				new RegionFinderTest("pictures/baker.jpg", new Color(130, 100, 100));
 			}
 		});
