@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+//created by Alex Tsu
 
 public class FlierTest extends DrawingFrame {
 	private static final int width=400, height=400;		// setup: size of the world
