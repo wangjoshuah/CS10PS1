@@ -1,20 +1,29 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+
 import javax.swing.*;
-//created by Alex Tsu
 
 public class FlierTest extends DrawingFrame {
-	private static final int width=400, height=400;		// setup: size of the world
+	private static final int width=600, height=600;		// setup: size of the world
 
-	private Flier flier;								// one test flier
+	private Agent agentf;								// one test flier
 	private ArrayList<ArrayList<Point>> regions;		// one test region
+
 	
 	public FlierTest() {
 		super("Flier Test", width, height);
 		
+		agentf = new Flier(0,0,width,height);
+		
 		// Create the flier.
-		// YOUR CODE HERE
+		canvas.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent event) {
+				int x = event.getPoint().x, y = event.getPoint().y;
+			}
+	
+		});
+
 		
 		// Create a region that the flier might hit.
 		ArrayList<Point> region = new ArrayList<Point>();
@@ -29,13 +38,18 @@ public class FlierTest extends DrawingFrame {
 		// Move every 100 milliseconds.
 		Timer timer = new Timer(100, new AbstractAction("update") {
 			public void actionPerformed(ActionEvent e) {
-				// Move the flier.
-				// YOUR CODE HERE
-				// Detect exiting the window (and restart)
-				// YOUR CODE HERE
-				// Detect hitting the region (and restart)
-				// YOUR CODE HERE
-				
+
+				agentf.move();
+				for(ArrayList<Point> region : regions) {
+					for(Point point : region) {
+						if(agentf.getX() == point.getX() && agentf.getY() == point.getY()) {
+							agentf.setX(0);
+							agentf.setY(0);
+							System.out.println("hit");
+						}
+					}
+				}
+
 				canvas.repaint();
 			}
 		});
@@ -52,7 +66,7 @@ public class FlierTest extends DrawingFrame {
 			}
 		}
 		
-		flier.draw(g);
+		agentf.draw(g);
 	}
 	
 	/**
