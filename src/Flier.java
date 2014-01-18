@@ -7,44 +7,32 @@ import java.awt.*;
  */
 public class Flier extends Agent {
 	private int xmax, ymax; //max range, past which the agent will disappear
-	private double dx, dy; //direction 
+	private int dx, dy; //direction 
 	private double startx, starty;
 	
+
 	// YOUR CODE HERE
 	// instance variables, constructor, helper methods, etc.
 	
-	public Flier(double x, double y, int xmax, int ymax) {
+	public Flier(int x, int y, int r) {
 		super(x,y); // since Agent requires a position; you may modify this if desired
 		this.xmax = xmax; 
 		this.ymax = ymax;
+		this.r = r;
 		
 		 startx = x;
 		 starty = y;
 		
 	
-		dx = 100 * (Math.random() - 0.5);
-		dy = 100 * (Math.random() - 0.5);
+		dx = 10/*(int) ((int) 100 * (Math.random() - 0.5))*/;
+		dy = 10/*(int) ((int) 100 * (Math.random() - 0.5))*/;
 	}
 	
 	public void move() {
 		x += dx;
 		y += dy;
-		
-		if (x > xmax - r) {
-			x = startx;
-			y = starty;
-		}
-		else if (x < r) {
-			x = startx;
-			y = starty;
-		}
-		if (y > ymax - r) {
-			x = startx;
-			y = starty;
-		}
-		else if (y < r) {
-			x = startx;
-			y = starty;
-		}
+
 	}
+	
+	
 }

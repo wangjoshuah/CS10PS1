@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -11,6 +12,12 @@ public class Catch extends Webcam {
 	private Color trackColor;				// color of regions of interest (set by mouse press)
 	private Flier flier;					// it's flying once mouse is pressed
 	private RegionFinder finder;			// handles finding regions
+	private int scorekeeper;
+	private ArrayList<ArrayList<Point>> regions;		// one test region
+	
+	private int r = 10; //flier radius
+	private int startx = 0, starty = 0;
+	
 	
 	public Catch() {
 		finder = new RegionFinder();
@@ -22,10 +29,44 @@ public class Catch extends Webcam {
 	public void processImage() {
 		if (trackColor != null) {
 			// Detect regions and recolor
-			// YOUR CODE HERE
+			//super("Region finder test", filename);
+			
+			// Do the region finding and recolor the image.
+			RegionFinder finder = new RegionFinder();
+			finder.findRegions(image, trackColor);
+			finder.recolorRegions(image);
 
 			// Move the flier and detect catches and misses
-			// YOUR CODE HERE
+			flier.move();
+			
+			//notify if flier hits a region
+			for(ArrayList<Point> region : regions) {
+				for(Point point : region) {
+					if(flier.getX() == point.getX() && flier.getY() == point.getY()) {
+						flier.setX(0);
+						flier.setY(0);
+						scorekeeper++;
+						System.out.println("Hit. New Score is" + scorekeeper);
+					}
+				}
+			}
+			//notify if flier leaves screen
+			if (flier.getX() > width - r) {
+				flier.setX(startx);
+				flier.setY(starty);
+			}
+			else if (flier.getX() < r) {
+				flier.setX(startx);
+				flier.setY(starty);
+			}
+			if (flier.getY() > height - r) {
+				flier.setX(startx);
+				flier.setY(starty);
+			}
+			else if (flier.getY() < r) {
+				flier.setX(startx);
+				flier.setY(starty);
+			}
 		}		
 	}
 	
@@ -46,10 +87,13 @@ public class Catch extends Webcam {
 	 */
 	public void handleMousePress(MouseEvent event) {
 		// Set tracking color
-		// YOUR CODE HERE
-
+		int x = event.getPoint().x; 
+		int y = event.getPoint().y;
+		trackColor = new Color(image.getRGB(x, y));
+		
+		
 		// Start object flying
-		// YOUR CODE HERE
+		flier = new Flier(startx, starty, r);
 	}
 	
 	/**

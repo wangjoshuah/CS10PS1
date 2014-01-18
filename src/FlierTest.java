@@ -10,16 +10,18 @@ public class FlierTest extends DrawingFrame {
 	private Agent agentf;								// one test flier
 	private ArrayList<ArrayList<Point>> regions;		// one test region
 
+	private int startx = 0, starty = 0;
 	
 	public FlierTest() {
 		super("Flier Test", width, height);
 		
-		agentf = new Flier(0,0,width,height);
+		agentf = new Flier(0,0, 10);
 		
 		// Create the flier.
 		canvas.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
 				int x = event.getPoint().x, y = event.getPoint().y;
+				agentf = new Flier(500,10, 10);
 			}
 	
 		});
@@ -40,12 +42,29 @@ public class FlierTest extends DrawingFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				agentf.move();
+				//Out of bounds detection
+				if (agentf.getX() > width - 10) {
+					agentf.setX(startx);
+					agentf.setY(starty);
+				}
+				else if (agentf.getX() < 10) {
+					agentf.setX(startx);
+					agentf.setY(starty);
+				}
+				if (agentf.getY() > height - 10) {
+					agentf.setX(startx);
+					agentf.setY(starty);
+				}
+				else if (agentf.getY() < 10) {
+					agentf.setX(startx);
+					agentf.setY(starty);
+				}
+				
 				for(ArrayList<Point> region : regions) {
 					for(Point point : region) {
 						if(agentf.getX() == point.getX() && agentf.getY() == point.getY()) {
 							agentf.setX(0);
 							agentf.setY(0);
-							System.out.println("hit");
 						}
 					}
 				}
