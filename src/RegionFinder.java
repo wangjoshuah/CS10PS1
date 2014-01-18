@@ -14,7 +14,6 @@ public class RegionFinder {
 	private ArrayList<ArrayList<Point>> regions = new ArrayList<ArrayList<Point>>();			// a region is a list of points
 															// so the identified regions are in a list of lists of points
 	private boolean[][] checkedPoints;
-	private ArrayList<Point> toDoList;
 	
 	/**
 	 * Accesses the currently-identified regions.
@@ -61,7 +60,7 @@ public class RegionFinder {
 	 * @param y value
 	 */
 	private void markPointAsChecked(int x, int y) {
-		System.out.println("We just checked point (" + x + ", " + y + ").");
+//		System.out.println("We just checked point (" + x + ", " + y + ").");
 		checkedPoints[x][y] = true;
 	}
 	
@@ -83,73 +82,40 @@ public class RegionFinder {
 	 */
 	public void findRegions(BufferedImage image, Color color) {
 		// YOUR CODE HERE
-		System.out.println("start finding regions");
-		checkedPoints = new boolean[image.getWidth()][image.getHeight()]; //get a new 2d array of points to check
-		for (int x = 0; x < image.getWidth(); x++) { //for all x's
-			for (int y = 0; y < image.getHeight(); y ++) { //for all y's
-				Point currentPixel = new Point(x,y); //get the pixel at that point
-				Color pixelColor = new Color(image.getRGB(x,y)); //get the color for that
-				if (isPointunChecked(currentPixel.x, currentPixel.y)&& colorMatch(color, pixelColor)) { //if the pixel is of the correct color we're looking for,
-					ArrayList<Point> queueToCheck = new ArrayList<Point>(); //create a queue of pixels to check
-					queueToCheck.add(currentPixel); //add the current pixel to that list
-					ArrayList<Point> region = new ArrayList<Point>(); //start a new region to hold it
-					while (!queueToCheck.isEmpty()) { //while we still have points to check
-						Point neighbor = queueToCheck.get(0); //get the first one int the ArrayList to check add it
-							System.out.println("got first point (" + neighbor.x + ", " + neighbor.y + ").");
-						region.add(neighbor); //add it to the region
-						markPointAsChecked(neighbor.x, neighbor.y);
-							System.out.println("Region running total is " + region.size());
-						//now add all its neighbors
-							for (int i = (int) neighbor.getX(); i <= Math.min(image.getWidth(), (int) neighbor.getX()); i ++) { //loop through neighboring columns
-								for (int j = (int) neighbor.getY(); j <= Math.min(image.getHeight(), (int) neighbor.getY()); j ++) { //loop through neighboring rows
-									Point testNeighbor = new Point(i,j);
-									Color testColor = new Color(image.getRGB(i, j)); //get the color for that
-									if (colorMatch(color, testColor)) { //check color
-										System.out.println("Color we are trying to look at is " + pixelColor.toString());
-										if (isPointunChecked(i, j)) {
-											queueToCheck.add(testNeighbor); //add it to our to do list
-										}
-									}
-									markPointAsChecked(i,j);
+		
+		checkedPoints = new boolean[image.getWidth()][image.getHeight()]; //instantiate the 2d array of booleans to make sure we don't double check
+		for (int i = 0; i < image.getWidth(); i ++ ) { //for all columns
+			for (int j = 0; j < image.getHeight(); j ++) { //and all rows
+				if (isPointunChecked(i, j)) { //if we haven't checked the point yet
+					Point startPoint = new Point(i,j); //get that point
+					ArrayList<Point> toCheck = new ArrayList<Point>(); //create a list of points we need to visit
+					toCheck.add(startPoint); //add our start point to the arraylist of points we need to visit
+					ArrayList<Point> ourRegion = new ArrayList<Point>(); //create a region to hold our points
+					while (!toCheck.isEmpty()) { //while we still have points to check
+						Point checkPoint = toCheck.get(0); //get the first point we need to check
+//						System.out.println("Starting while loop with point " + checkPoint);
+						ourRegion.add(checkPoint); //add it to our region
+						markPointAsChecked((int) checkPoint.getX(), (int) checkPoint.getY()); //don't use the start point again
+						for (int x = Math.max(0, (int) checkPoint.getX() - 1); x < Math.min(image.getWidth(), checkPoint.getX() + 2); x ++) { //for the neighboring columns
+							for (int y = Math.max(0, (int) checkPoint.getY() - 1); y < Math.min(image.getHeight(), checkPoint.getY() + 2); y++) { //and the neighboring rows
+								Color neighborColor = new Color(image.getRGB(x, y)); //get its color
+								if (colorMatch(color, neighborColor) && isPointunChecked(x, y)) { //if the color matches and the point is unchecked
+									Point neighborPoint = new Point(x, y); //get that point
+									toCheck.add(neighborPoint); //add that point to the points we need to check
 								}
-							}							System.out.println("Queue size is " + queueToCheck.size());
-							System.out.println("about to remove point (" + neighbor.x + ", " + neighbor.y + ").");
-						queueToCheck.remove(0); //remove the point we just checked
+								markPointAsChecked(x, y); //mark it off
+							}
+						}
+						toCheck.remove(0); //remove the point were just were using as a center for neighbors
 					}
-					System.out.println("FINAL size is " + region.size());
-					if (region.size() >= minRegion) { //if the region we just checked is greater than the required size
-						regions.add(region); //add it to the list of regions we maintain
-						System.out.println("Add this region to regions");
+					if (ourRegion.size() > minRegion) { //if it is large enough
+						regions.add(ourRegion); //add it to our array of regions
 					}
 				}
-				markPointAsChecked(currentPixel.x, currentPixel.y); //make sure we've checked that pixel
 			}
-		}
+		}	
 	}
-	/*
-	private void addNeighbors(BufferedImage image, Point pixel, ArrayList<Point> toDoList, Color matchColor) {
-		System.out.println("Adding Neighbors");
-		for (int x = Math.max(0,(int) pixel.getX() - 1); x <= Math.min(image.getWidth(), (int) pixel.getX()); x ++) { //loop through neighboring columns
-//			System.out.println("X is " + x + "End X is " + Math.min(image.getWidth(), (int) pixel.getX()));
-			for (int y = Math.max(0, (int) pixel.getY() - 1); y <= Math.min(image.getHeight(), (int) pixel.getY()); y ++) { //loop through neighboring rows
-				System.out.println("Y is " + y + "End Y is " + Math.min(image.getHeight(), (int) pixel.getY()));
-				Point neighbor = new Point(x,y);
-				Color pixelColor = new Color(image.getRGB(x,y)); //get the color for that
-//				System.out.println("The point location is (" + x + ", " + y + ")");
-				if (colorMatch(matchColor, pixelColor)) { //check color
-					System.out.println("Color we are trying to look at is " + pixelColor.toString());
-					if (isPointunChecked(x, y)) {
-						System.out.println("Adding point to to do list (" + pixel.x + ", " + pixel.y + ").");
-						toDoList.add(neighbor); //add it to our to do list
-					}
-					System.out.println("TO Do List size is " + toDoList.size());
-				}
-				markPointAsChecked(x,y);
-			}
-		}
-		System.out.println("To DO List Size is " + toDoList.size());
-	}
-	*/
+
 	
 	/**
 	 * Recolors image so that each region is a random uniform color, so we can see where they are
@@ -164,5 +130,6 @@ public class RegionFinder {
 				image.setRGB(pixel.x, pixel.y, crazyColor.getRGB());
 			}
 		}
+		System.out.println("We have " + regions.size() + " Regions.");
 	}
 }
