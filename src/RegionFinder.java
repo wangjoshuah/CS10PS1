@@ -14,6 +14,7 @@ public class RegionFinder {
 	private ArrayList<ArrayList<Point>> regions = new ArrayList<ArrayList<Point>>();			// a region is a list of points
 															// so the identified regions are in a list of lists of points
 	private boolean[][] checkedPoints;
+	private boolean[][] coloredPoints;
 	
 	/**
 	 * Accesses the currently-identified regions.
@@ -123,13 +124,17 @@ public class RegionFinder {
 	 */
 	public void recolorRegions(BufferedImage image) {
 		// YOUR CODE HERE
-		System.out.println("Recoloring");
+		coloredPoints = new boolean[image.getWidth()][image.getHeight()];
 		Color crazyColor = new Color(255, 0, 0);
 		for (ArrayList<Point> region : regions) {
 			for (Point pixel : region) {
 				image.setRGB(pixel.x, pixel.y, crazyColor.getRGB());
+				coloredPoints[pixel.x][pixel.y] = true;
 			}
 		}
-		System.out.println("We have " + regions.size() + " Regions.");
+	}
+	
+	public boolean checkCatch(int x, int y) {
+		return coloredPoints[x][y];
 	}
 }

@@ -35,21 +35,19 @@ public class Catch extends Webcam {
 			RegionFinder finder = new RegionFinder();
 			finder.findRegions(image, trackColor);
 			finder.recolorRegions(image);
-
+			
 			// Move the flier and detect catches and misses
 			flier.move();
 			
 			//notify if flier hits a region
-			for(ArrayList<Point> region : regions) {
-				for(Point point : region) {
-					if(flier.getX() == point.getX() && flier.getY() == point.getY()) {
-						flier.setX(0);
-						flier.setY(0);
-						scorekeeper++;
-						System.out.println("Hit. New Score is" + scorekeeper);
-					}
-				}
+			if (finder.checkCatch((int) flier.getX(), (int) flier.getY())) {
+				flier.setX(0);
+				flier.setY(0);
+				scorekeeper++;
+				System.out.println("Hit. New Score is" + scorekeeper);
 			}
+			
+			
 			//notify if flier leaves screen
 			if (flier.getX() > width - r) {
 				flier.setX(startx);
