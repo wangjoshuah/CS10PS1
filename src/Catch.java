@@ -50,18 +50,22 @@ public class Catch extends Webcam {
 			
 			//notify if flier leaves screen
 			if (flier.getX() > width - r) {
+				System.out.println("first case");
 				flier.setX(startx);
 				flier.setY(starty);
 			}
 			else if (flier.getX() < r) {
+				System.out.println("second case");
 				flier.setX(startx);
 				flier.setY(starty);
 			}
 			if (flier.getY() > height - r) {
+				System.out.println("third case");
 				flier.setX(startx);
 				flier.setY(starty);
 			}
 			else if (flier.getY() < r) {
+				System.out.println("fourth case");
 				flier.setX(startx);
 				flier.setY(starty);
 			}
