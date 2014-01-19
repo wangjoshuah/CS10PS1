@@ -13,6 +13,7 @@ public class Catch extends Webcam {
 	private Flier flier;					// it's flying once mouse is pressed
 	private RegionFinder finder;			// handles finding regions
 	private int scorekeeper;
+	private int losskeeper;
 	private ArrayList<ArrayList<Point>> regions;		// one test region
 	
 	private int r = 10; //flier radius
@@ -39,37 +40,42 @@ public class Catch extends Webcam {
 			// Move the flier and detect catches and misses
 			flier.move();
 			
-			//notify if flier hits a region
-			if (finder.checkCatch((int) flier.getX(), (int) flier.getY())) {
-				flier.setX(0);
-				flier.setY(0);
-				scorekeeper++;
-				System.out.println("Hit. New Score is" + scorekeeper);
-			}
-			
-			
 			//notify if flier leaves screen
 			if (flier.getX() > width - r) {
-				System.out.println("first case");
+				losskeeper++;
+				System.out.println("Miss. New Miss Total is " + losskeeper);
 				flier.setX(startx);
 				flier.setY(starty);
 			}
 			else if (flier.getX() < r) {
-				System.out.println("second case");
+				losskeeper++;
+				System.out.println("Miss. New Miss Total is " + losskeeper);
 				flier.setX(startx);
 				flier.setY(starty);
 			}
-			if (flier.getY() > height - r) {
-				System.out.println("third case");
+			else if (flier.getY() > height - r) {
+				losskeeper++;
+				System.out.println("Miss. New Miss Total is " + losskeeper);
 				flier.setX(startx);
 				flier.setY(starty);
 			}
 			else if (flier.getY() < r) {
-				System.out.println("fourth case");
+				losskeeper++;
+				System.out.println("Miss. New Miss Total is " + losskeeper);
 				flier.setX(startx);
 				flier.setY(starty);
 			}
-		}		
+			
+			
+			//notify if flier hits a region
+			if (finder.checkCatch((int) flier.getX(), (int) flier.getY())) {
+				flier.setX(startx);
+				flier.setY(starty);
+				scorekeeper++;
+				System.out.println("Hit. New Score is " + scorekeeper);
+			}
+
+		}
 	}
 	
 	/**
