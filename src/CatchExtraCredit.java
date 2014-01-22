@@ -17,7 +17,7 @@ public class CatchExtraCredit extends Webcam {
 	private ArrayList<ArrayList<Point>> regions;		// one test region
 	
 	private int r = 10; //flier radius
-	private int startx = 0, starty = 0;
+	private int startx = 10, starty = 10;
 	
 	
 	public CatchExtraCredit() {
@@ -41,38 +41,47 @@ public class CatchExtraCredit extends Webcam {
 			flier.move();
 			
 			//notify if flier leaves screen
-			if (flier.getX() > width - r) {
+			if (flier.getX() > width - r) { //if statement triggers when flier extends past the leftmost bound of the webcam
+				losskeeper++; //adds one to the losskeeper
+				System.out.println("Miss. New Miss Total is " + losskeeper); //prints the current quantity of missed balls
+				flier.setX(startx); //sets the flier location at the starting x point
+				flier.setY(starty); //sets the flier location at the starting y point
+				flier.setspeedX(5+(int)(Math.random()*15)); //sets a new x movement speed for the flier
+				flier.setspeedY(5+(int)(Math.random()*15)); //sets a new y movement speed for the flier
+			}
+			else if (flier.getX() < r) { //else if triggers if flier touches the leftmost boundary. All following code is same as above if statement
 				losskeeper++;
 				System.out.println("Miss. New Miss Total is " + losskeeper);
 				flier.setX(startx);
 				flier.setY(starty);
+				flier.setspeedX(5+(int)(Math.random()*15));
+				flier.setspeedY(5+(int)(Math.random()*15));
 			}
-			else if (flier.getX() < r) {
+			else if (flier.getY() > height - r) { //else if triggers if flier touches the bottommost boundary. All following code is same as above if statement
 				losskeeper++;
 				System.out.println("Miss. New Miss Total is " + losskeeper);
 				flier.setX(startx);
 				flier.setY(starty);
+				flier.setspeedX(5+(int)(Math.random()*15));
+				flier.setspeedY(5+(int)(Math.random()*15));
 			}
-			else if (flier.getY() > height - r) {
+			else if (flier.getY() < r) { //else if triggers if flier touches topmost boundary. All following code is same as above if statement
 				losskeeper++;
 				System.out.println("Miss. New Miss Total is " + losskeeper);
 				flier.setX(startx);
 				flier.setY(starty);
+				flier.setspeedX(5+(int)(Math.random()*15));
+				flier.setspeedY(5+(int)(Math.random()*15));
 			}
-			else if (flier.getY() < r) {
-				losskeeper++;
-				System.out.println("Miss. New Miss Total is " + losskeeper);
-				flier.setX(startx);
-				flier.setY(starty);
-			}
-			
 			
 			//notify if flier hits a region
-			if (finder.checkCatch((int) flier.getX(), (int) flier.getY())) {
-				flier.setX(startx);
+			if (finder.checkCatch((int) flier.getX(), (int) flier.getY())) { //checkCatch returns true if the location of the flier matches a region. 
+				flier.setX(startx); //setX, setY, setspeedX, setspeedY are the same as above
 				flier.setY(starty);
-				scorekeeper++;
-				System.out.println("Hit. New Score is " + scorekeeper);
+				flier.setspeedX(5+(int)(Math.random()*15));
+				flier.setspeedY(5+(int)(Math.random()*15));
+				scorekeeper++; //adds one to the scorekeeper
+				System.out.println("Hit. New Score is " + scorekeeper); //prints current number of hits
 			}
 
 		}
