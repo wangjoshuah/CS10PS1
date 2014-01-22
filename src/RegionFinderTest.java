@@ -16,7 +16,7 @@ public class RegionFinderTest extends DrawingFrame {
 		System.out.println("put up the picture");
 		
 		// Do the region finding and recolor the image.
-		RegionFinder finder = new RegionFinder();
+		RegionFinderExtraCredit finder = new RegionFinderExtraCredit();
 		System.out.println("created the region finder");
 		finder.findRegions(image, color);
 		finder.recolorRegions(image);

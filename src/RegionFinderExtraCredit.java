@@ -7,7 +7,7 @@ import java.util.*;
  * Each region is a list of contiguous points with colors similar to a target color.
  * Template for PS-1, Dartmouth CS 10, Winter 2014
  */
-public class RegionFinder {
+public class RegionFinderExtraCredit {
 	private static final int maxColorDiff = 20;				// how similar a pixel color must be to the target color, to belong to a region
 	private static final int minRegion = 50; 				// how many points in a region to be worth considering
 	
@@ -125,9 +125,9 @@ public class RegionFinder {
 	public void recolorRegions(BufferedImage image) {
 		// YOUR CODE HERE
 		coloredPoints = new boolean[image.getWidth()][image.getHeight()]; //use a new coloredpoints array every time we recolor 
-		int redComponent = 0; //no red
-		int greenComponent = (255); //all green
-		int blueComponent = 0; //no blue
+		int redComponent = (int) (255 * Math.random()); //random red component (255 is max RGB pixel color)
+		int greenComponent = (int) (255 * Math.random()); //random green
+		int blueComponent = (int) (255 * Math.random()); //random blue
 		Color crazyColor = new Color(redComponent, greenComponent, blueComponent); //choose the color for our regions 
 		for (ArrayList<Point> region : regions) { //for each region within regions
 			for (Point pixel : region) { //for all points within each region
