@@ -30,7 +30,7 @@ public class RegionFinder {
 	 * @param c2 the neighbor color
 	 * @return
 	 */
-	private static boolean colorMatch(Color c1, Color c2) {
+	protected static boolean colorMatch(Color c1, Color c2) {
 		// YOUR CODE HERE
 		if (c2.getRed() - c1.getRed() > maxColorDiff) { //if the neighbor color is 20 greater than the original
 			return false; //go away
