@@ -51,7 +51,7 @@ public class RegionFinder {
 	 * @param c2 the neighbor color
 	 * @return
 	 */
-	private static boolean colorMatch(Color c1, Color c2) {
+	protected static boolean colorMatch(Color c1, Color c2) {
 		// YOUR CODE HERE
 		if (c2.getRed() - c1.getRed() > maxColorDiff) { //if the neighbor color is 20 greater than the original
 			return false; //go away
@@ -143,7 +143,6 @@ public class RegionFinder {
 	 */
 	public void recolorRegions(BufferedImage image) {
 		// YOUR CODE HERE
-<<<<<<< HEAD
 		resetColoredPoints(image); //set our coloredpoints array to false 
 		int redComponent = 0; //no red
 		int greenComponent = (255); //all green
@@ -153,14 +152,6 @@ public class RegionFinder {
 			for (Point pixel : region) { //for all points within each region
 				image.setRGB(pixel.x, pixel.y, crazyColor.getRGB()); //set the color to our c
 				coloredPointAt(pixel.x, pixel.y);
-=======
-		coloredPoints = new boolean[image.getWidth()][image.getHeight()];
-		Color crazyColor = new Color(255, 0, 0);
-		for (ArrayList<Point> region : regions) {
-			for (Point pixel : region) {
-				image.setRGB(pixel.x, pixel.y, crazyColor.getRGB());
-				coloredPoints[pixel.x][pixel.y] = true;
->>>>>>> 1c7aea7f8794cf58d71e4732cfb8da7dbea25d8a
 			}
 		}
 	}
@@ -172,6 +163,6 @@ public class RegionFinder {
 	 * @return bool based on catch
 	 */
 	public boolean checkCatch(int x, int y) {
-		return coloredPoints[x][y];
+		return coloredPoints[x][y]; //return the boolean value of whether the point has been colored or not
 	}
 }
