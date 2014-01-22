@@ -9,12 +9,33 @@ import java.util.*;
  */
 public class RegionFinder {
 	private static final int maxColorDiff = 20;				// how similar a pixel color must be to the target color, to belong to a region
-	private static final int minRegion = 50; 				// how many points in a region to be worth considering
+	protected static final int minRegion = 50; 				// how many points in a region to be worth considering
 	
 	private ArrayList<ArrayList<Point>> regions = new ArrayList<ArrayList<Point>>();			// a region is a list of points
 															// so the identified regions are in a list of lists of points
 	private boolean[][] checkedPoints;
 	private boolean[][] coloredPoints;
+	
+	/**
+	 * reset checked points to false
+	 * @param image our image
+	 */
+	protected void resetCheckedPoints(BufferedImage image) {
+		checkedPoints = new boolean[image.getWidth()][image.getHeight()];
+	}
+	
+	/**
+	 * reset colored Points to false
+	 * @param image our image
+	 */
+	protected void resetColoredPoints(BufferedImage image) {
+		coloredPoints = new boolean[image.getWidth()][image.getHeight()];
+	}
+	
+	protected void coloredPointAt(int x, int y) {
+		coloredPoints[x][y] = true; //set colored points at pixel x,y to be true
+	}
+	
 	
 	/**
 	 * Accesses the currently-identified regions.
@@ -60,9 +81,8 @@ public class RegionFinder {
 	 * @param x value
 	 * @param y value
 	 */
-	private void markPointAsChecked(int x, int y) {
-//		System.out.println("We just checked point (" + x + ", " + y + ").");
-		checkedPoints[x][y] = true;
+	protected void markPointAsChecked(int x, int y) {
+		checkedPoints[x][y] = true; //mark the corresponding point in the 2d bool array as checked
 	}
 	
 	/**
@@ -71,8 +91,8 @@ public class RegionFinder {
 	 * @param y value
 	 * @return 
 	 */
-	private boolean isPointunChecked(int x, int y) {
-		return !checkedPoints[x][y];
+	protected boolean isPointunChecked(int x, int y) {
+		return !checkedPoints[x][y]; //return true if we have not checked the point yet
 	}
 	
 	
@@ -83,8 +103,7 @@ public class RegionFinder {
 	 */
 	public void findRegions(BufferedImage image, Color color) {
 		// YOUR CODE HERE
-		
-		checkedPoints = new boolean[image.getWidth()][image.getHeight()]; //instantiate the 2d array of booleans to make sure we don't double check
+		resetCheckedPoints(image);//set our checked points 2d array to false
 		for (int i = 0; i < image.getWidth(); i ++ ) { //for all columns
 			for (int j = 0; j < image.getHeight(); j ++) { //and all rows
 				if (isPointunChecked(i, j)) { //if we haven't checked the point yet
@@ -124,7 +143,7 @@ public class RegionFinder {
 	 */
 	public void recolorRegions(BufferedImage image) {
 		// YOUR CODE HERE
-		coloredPoints = new boolean[image.getWidth()][image.getHeight()]; //use a new coloredpoints array every time we recolor 
+		resetColoredPoints(image); //set our coloredpoints array to false 
 		int redComponent = 0; //no red
 		int greenComponent = (255); //all green
 		int blueComponent = 0; //no blue
@@ -132,11 +151,17 @@ public class RegionFinder {
 		for (ArrayList<Point> region : regions) { //for each region within regions
 			for (Point pixel : region) { //for all points within each region
 				image.setRGB(pixel.x, pixel.y, crazyColor.getRGB()); //set the color to our c
-				coloredPoints[pixel.x][pixel.y] = true; //and mark that color as colored in our boolean 2d array
+				coloredPointAt(pixel.x, pixel.y);
 			}
 		}
 	}
 	
+	/**
+	 * Returns if we caught the variable or not
+	 * @param x ball's x,
+	 * @param y and y location
+	 * @return bool based on catch
+	 */
 	public boolean checkCatch(int x, int y) {
 		return coloredPoints[x][y]; //return the boolean value of whether the point has been colored or not
 	}
