@@ -101,7 +101,7 @@ public class CatchExtraCredit extends Webcam {
 		
 		
 		// Start object flying
-		flier = new Flier(startx, starty, r);
+		flier = new Flier(startx, starty, 5+(int)(Math.random()*15), 5+(int)(Math.random()*15), r);
 	}
 	
 	/**

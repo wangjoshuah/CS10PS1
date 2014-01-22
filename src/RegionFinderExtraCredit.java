@@ -96,15 +96,15 @@ public class RegionFinderExtraCredit extends RegionFinder { //save most of our w
 	 */
 	public void recolorRegions(BufferedImage image) {
 		// YOUR CODE HERE
-		coloredPoints = new boolean[image.getWidth()][image.getHeight()]; //use a new coloredpoints array every time we recolor 
+		resetColoredPoints(image); //reset colored points array
 		int redComponent = (int) (255 * Math.random()); //random red component (255 is max RGB pixel color)
 		int greenComponent = (int) (255 * Math.random()); //random green
 		int blueComponent = (int) (255 * Math.random()); //random blue
 		Color crazyColor = new Color(redComponent, greenComponent, blueComponent); //choose the color for our regions 
 		for (ArrayList<Point> region : regions) { //for each region within regions
 			for (Point pixel : region) { //for all points within each region
-				image.setRGB(pixel.x, pixel.y, crazyColor.getRGB()); //set the color to our c
-				coloredPoints[pixel.x][pixel.y] = true; //and mark that color as colored in our boolean 2d array
+				image.setRGB(pixel.x, pixel.y, crazyColor.getRGB()); //set the color to our color
+				coloredPointAt(pixel.x, pixel.y); //make sure we remember we colored that point
 			}
 		}
 	}
