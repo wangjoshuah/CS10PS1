@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Region growing algorithm: finds and holds regions in an image.
  * Each region is a list of contiguous points with colors similar to a target color.
- * Template for PS-1, Dartmouth CS 10, Winter 2014
+ * Josh Wang and Alex Tsu Dartmouth CS 10 PS 1 Winter 2014
  */
 public class RegionFinderExtraCredit extends RegionFinder { //save most of our work from the parent class Region Finder
 
