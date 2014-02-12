@@ -15,13 +15,13 @@ public class FlierTest extends DrawingFrame {
 	public FlierTest() {
 		super("Flier Test", width, height);
 		
-		agentf = new Flier(0,0, 10);
+		agentf = new Flier(0,0, 10, startx, startx);
 		
 		// Create the flier.
 		canvas.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
 				int x = event.getPoint().x, y = event.getPoint().y;
-				agentf = new Flier(500,10, 10);
+				agentf = new Flier(500,10, 10, y, y);
 			}
 	
 		});
